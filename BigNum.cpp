@@ -26,5 +26,26 @@ BigNum::BigNum(const std::string& bigStr){
         }
     }
 }
+BigNum::BigNum(const int num) {
+    if (num < 0) {
+        isNegative = true;
+    } else {
+        isNegative = false;
+    }
+    int n = num;
+    while (n > 0) {
+        digits.push_back(n % 10);
+        n /= 10;
+    }
+    if (digits.empty()) {
+        digits.push_back(0); 
+    }
+}
+void BigNum::clear() {
+    isNegative = false;
+    digits.clear(); 
+}
 
-    
+BigNum::~BigNum() {
+    clear();
+}
