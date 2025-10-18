@@ -230,8 +230,8 @@ private:
      * Equivalent to deleting the dynamic array or releasing memory.
      * Called in destructor and input methods before resetting the value.
      */
-    bool isNegative;          // Sign of the number
-    vector<char>digits; // Digits stored in reverse order
+    bool isNegative;     // Sign of the number
+    vector<char>digits; // Each char represents a digit (0-9)
     void clear();
 };
 
