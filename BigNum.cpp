@@ -5,55 +5,74 @@
 #include "BigNum.h"
 using namespace std;
 
+
 // SAQIB REHMAN (sr10128) L2
 
+// ⣿⣿⣿⣿⣿⣿⣿⡿⡛⠟⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣿⣿⠿⠨⡀⠄⠄⡘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⠿⢁⠼⠊⣱⡃⠄⠈⠹⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⡿⠛⡧⠁⡴⣦⣔⣶⣄⢠⠄⠄⠹⣿⣿⣿⣿⣿⣿⣿⣤⠭⠏⠙⢿⣿⣿⣿⣿⣿
+// ⣿⡧⠠⠠⢠⣾⣾⣟⠝⠉⠉⠻⡒⡂⠄⠙⠻⣿⣿⣿⣿⣿⡪⠘⠄⠉⡄⢹⣿⣿⣿⣿
+// ⣿⠃⠁⢐⣷⠉⠿⠐⠑⠠⠠⠄⣈⣿⣄⣱⣠⢻⣿⣿⣿⣿⣯⠷⠈⠉⢀⣾⣿⣿⣿⣿
+// ⣿⣴⠤⣬⣭⣴⠂⠇⡔⠚⠍⠄⠄⠁⠘⢿⣷⢈⣿⣿⣿⣿⡧⠂⣠⠄⠸⡜⡿⣿⣿⣿
+// ⣿⣇⠄⡙⣿⣷⣭⣷⠃⣠⠄⠄⡄⠄⠄⠄⢻⣿⣿⣿⣿⣿⣧⣁⣿⡄⠼⡿⣦⣬⣰⣿
+// ⣿⣷⣥⣴⣿⣿⣿⣿⠷⠲⠄⢠⠄⡆⠄⠄⠄⡨⢿⣿⣿⣿⣿⣿⣎⠐⠄⠈⣙⣩⣿⣿
+// ⣿⣿⣿⣿⣿⣿⢟⠕⠁⠈⢠⢃⢸⣿⣿⣶⡘⠑⠄⠸⣿⣿⣿⣿⣿⣦⡀⡉⢿⣧⣿⣿
+// ⣿⣿⣿⣿⡿⠋⠄⠄⢀⠄⠐⢩⣿⣿⣿⣿⣦⡀⠄⠄⠉⠿⣿⣿⣿⣿⣿⣷⣨⣿⣿⣿
+// ⣿⣿⣿⡟⠄⠄⠄⠄⠄⠋⢀⣼⣿⣿⣿⣿⣿⣿⣿⣶⣦⣀⢟⣻⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⡆⠆⠄⠠⡀⡀⠄⣽⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⡿⡅⠄⠄⢀⡰⠂⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+
+// Default constructor initializes the BigNum as zero.
 BigNum::BigNum() {
-    isNegative = false;
-    digits.push_back('0'); 
+    isNegative = false;            // Zero is not negative
+    digits.push_back('0');         // Store the single digit '0'
 }
 
+// Copy constructor — duplicates sign and digits.
 BigNum::BigNum(const BigNum& bigNum) {
-    this->isNegative = bigNum.isNegative;
-    this->digits = bigNum.digits; 
+    this->isNegative = bigNum.isNegative;  // Copy sign
+    this->digits = bigNum.digits;          // Deep copy of digit vector (Vecotor class automatically makes deep copy)
 }
 
+// Constructor from string — validates input and extracts digits.
 BigNum::BigNum(const string& bigStr) {
-    clear();
-    if (bigStr.empty()) {
+    clear();                                // Ensure object starts clean
+    if (bigStr.empty()) {                   // Handle empty string
         isNegative = false;
         digits.push_back('0');
         return;
     }
 
     string str = bigStr;
-    bool valid = true;
-    int start = 0;
+    bool valid = true;                      // Input validity flag
+    int start = 0;                          // Index from where digits start
 
-    // Handle negative
-    if (str[0] == '-') {
+    // Detect sign symbol
+    if (str[0] == '-') {                    // Negative number
         isNegative = true;
         start = 1;
-        if (str.size() == 1) valid = false; // Just "-"
+        if (str.size() == 1) valid = false; // String was just "-"
     } 
-    else if (str[0] == '+') {
+    else if (str[0] == '+') {               // Explicit positive
         isNegative = false;
         start = 1;
-        if (str.size() == 1) valid = false; // Just "+"
+        if (str.size() == 1) valid = false; // String was just "+"
     } 
     else {
-        isNegative = false;
+        isNegative = false;                 // No sign means positive
     }
 
-    // Parse characters and validate
+    // Extract digits and validate characters
     for (int i = start; i < (int)str.size(); i++) {
-        if (!isdigit(str[i])) {
+        if (!isdigit(str[i])) {             // Non-digit found → invalid
             valid = false;
             break;
         }
-        digits.push_back(str[i]);
+        digits.push_back(str[i]);           // Store as characters
     }
 
-    // Handle invalid inputs
+    // Handle invalid input (like letters or just "-")
     if (!valid || digits.empty()) {
         cout << "Invalid number input." << endl;
         isNegative = false;
@@ -62,47 +81,54 @@ BigNum::BigNum(const string& bigStr) {
         return;
     }
 
-    // Remove leading zeros
+    // Remove leading zeros (e.g., "000123" → "123")
     while (digits.size() > 1 && digits[0] == '0')
         digits.erase(digits.begin());
 
-    // If zero, ensure positive
+    // Zero should not be negative
     if (digits.size() == 1 && digits[0] == '0')
         isNegative = false;
 }
 
+// Constructor from int (for small number convenience)
 BigNum::BigNum(const int num) {
     clear();
-    if (num == 0) {
+    if (num == 0) {                         // Handle zero case
         isNegative = false;
         digits.push_back('0');
         return;
     }
 
-    isNegative = (num < 0);
-    int n = (num < 0) ? -num : num;
-    string s = to_string(n);
+    isNegative = (num < 0);                 // Set sign
+    int n = (num < 0) ? -num : num;         // Take absolute value
+    string s = to_string(n);                // Convert int → string
     for (char c : s)
-        digits.push_back(c);
+        digits.push_back(c);                // Store characters as digits
 }
 
+// Clears the BigNum data completely
 void BigNum::clear() {
     isNegative = false;
-    digits.clear(); 
+    digits.clear();
 }
 
+// Destructor (resets object memory)
 BigNum::~BigNum() {
     clear();
 }
 
+
+
+// Manual input from console
 void BigNum::input() {
     clear();
     string inputStr;
-    cin >> inputStr;
+    cin >> inputStr;                         // Read full input as string
 
     bool valid = true;
     int start = 0;
 
+    // Handle sign characters
     if (inputStr.empty()) valid = false;
     else if (inputStr[0] == '-') {
         isNegative = true;
@@ -117,6 +143,7 @@ void BigNum::input() {
         isNegative = false;
     }
 
+    // Extract and validate digits
     for (int i = start; i < (int)inputStr.size(); i++) {
         if (!isdigit(inputStr[i])) {
             valid = false;
@@ -125,6 +152,7 @@ void BigNum::input() {
         digits.push_back(inputStr[i]);
     }
 
+    // Handle invalid or empty inputs
     if (!valid || digits.empty()) {
         cout << "Invalid number input." << endl;
         isNegative = false;
@@ -133,13 +161,16 @@ void BigNum::input() {
         return;
     }
 
+    // Remove leading zeros, ensure non-negative zero
     while (digits.size() > 1 && digits[0] == '0')
         digits.erase(digits.begin());
     if (digits.size() == 1 && digits[0] == '0')
         isNegative = false;
 }
 
+// Print to console, formatted with commas every 3 digits
 void BigNum::print() {
+    // Remove extra leading zeros
     while (digits.size() > 1 && digits[0] == '0')
         digits.erase(digits.begin());
     if (digits.size() == 1 && digits[0] == '0')
@@ -152,6 +183,7 @@ void BigNum::print() {
     int group = len % 3;
     if (group == 0) group = 3;
 
+    // Print digits with commas every 3
     for (int i = 0; i < len; i++) {
         cout << digits[i];
         if ((i + 1 - group) % 3 == 0 && i + 1 < len)
@@ -159,13 +191,14 @@ void BigNum::print() {
     }
 }
 
+// Read number from a file (first line only)
 void BigNum::inputFromFile(const string& fileName) {
     clear();
     ifstream inputFile(fileName);
     string line;
     getline(inputFile, line);
 
-    if (line.empty()) {
+    if (line.empty()) {                      // Empty file → 0
         digits.push_back('0');
         return;
     }
@@ -173,6 +206,7 @@ void BigNum::inputFromFile(const string& fileName) {
     bool valid = true;
     int start = 0;
 
+    // Handle sign characters
     if (line[0] == '-') {
         isNegative = true;
         start = 1;
@@ -187,6 +221,7 @@ void BigNum::inputFromFile(const string& fileName) {
         isNegative = false;
     }
 
+    // Extract digits
     for (int i = start; i < (int)line.size(); i++) {
         if (!isdigit(line[i])) {
             valid = false;
@@ -195,6 +230,7 @@ void BigNum::inputFromFile(const string& fileName) {
         digits.push_back(line[i]);
     }
 
+    // Handle invalid file contents
     if (!valid || digits.empty()) {
         cout << "Invalid number input." << endl;
         isNegative = false;
@@ -203,12 +239,14 @@ void BigNum::inputFromFile(const string& fileName) {
         return;
     }
 
+    // Remove unnecessary zeros
     while (digits.size() > 1 && digits[0] == '0')
         digits.erase(digits.begin());
     if (digits.size() == 1 && digits[0] == '0')
         isNegative = false;
 }
 
+// Print the number to a file (in one line)
 void BigNum::printToFile(const string& fileName) {
     ofstream outputFile(fileName);
     if (isNegative)
@@ -219,60 +257,94 @@ void BigNum::printToFile(const string& fileName) {
 }
 
 
+
+// Copy contents of another BigNum
 void BigNum::copy(const BigNum& bigNum) {
     this->isNegative = bigNum.isNegative;
     this->digits = bigNum.digits;
 }
 
+// Assignment operator overload
 void BigNum::operator=(const BigNum& bigNum) {
     this->isNegative = bigNum.isNegative;
     this->digits = bigNum.digits;
 }
 
+// Reset number to zero
 void BigNum::zerofy() {
     isNegative = false;
     digits.clear();
     digits.push_back('0');
 }
 
-// ===== Comparison =====
 
+
+// Equality comparison
 bool BigNum::equals(const BigNum& bigNum) {
     return isNegative == bigNum.isNegative && digits == bigNum.digits;
 }
 
+// Inequality
 bool BigNum::notEquals(const BigNum& bigNum) {
     return !equals(bigNum);
 }
 
+// Less-than comparison
 bool BigNum::lessThan(const BigNum& bigNum) {
+    // If signs differ → negative is smaller
     if (isNegative != bigNum.isNegative)
         return isNegative;
-    if (digits.size() != bigNum.digits.size())
-        return (digits.size() < bigNum.digits.size()) ^ isNegative;
-    return (digits < bigNum.digits) ^ isNegative;
+
+    // Compare by length first (for non-negative numbers)
+    if (!isNegative) {
+        if (digits.size() < bigNum.digits.size()) return true;
+        if (digits.size() > bigNum.digits.size()) return false;
+    } 
+    else {
+        // For negative numbers
+        if (digits.size() < bigNum.digits.size()) return false;
+        if (digits.size() > bigNum.digits.size()) return true;
+    }
+
+    // Same length → compare digit by digit
+    for (size_t i = 0; i < digits.size(); ++i) {
+        char d1 = digits[i];
+        char d2 = bigNum.digits[i];
+
+        if (d1 < d2)
+            return !isNegative;  // smaller if positive
+        if (d1 > d2)
+            return isNegative;   // larger if negative
+    }
+
+    // If all digits equal
+    return false;
 }
 
+
+// Greater-than comparison (inverse of lessThan / equals)
 bool BigNum::greaterThan(const BigNum& bigNum) {
     return !equals(bigNum) && !lessThan(bigNum);
 }
 
-// ===== Addition =====
+
 
 BigNum BigNum::add(const BigNum& bigNum) {
-    // Handle cases where one number is negative
+    // Case 1: (-A) + B = B - A
     if (isNegative && !bigNum.isNegative) {
         BigNum temp = *this;
         temp.isNegative = false;
         BigNum copy = bigNum;
-        return copy.subtract(temp); // (-A) + B = B - A
+        return copy.subtract(temp);
     }
+    // Case 2: A + (-B) = A - B
     if (!isNegative && bigNum.isNegative) {
         BigNum temp = bigNum;
         temp.isNegative = false;
-        return this->subtract(temp); // A + (-B) = A - B
+        return this->subtract(temp);
     }
 
+    // Same sign → normal addition
     BigNum result;
     result.digits.clear();
 
@@ -280,14 +352,11 @@ BigNum BigNum::add(const BigNum& bigNum) {
     int i = digits.size() - 1;
     int j = bigNum.digits.size() - 1;
 
+    // Perform digit-by-digit addition from rightmost side
     while (i >= 0 || j >= 0 || carry) {
-        int d1 = 0;
-        int d2 = 0;
-
-        if (i >= 0)
-            d1 = digits[i] - '0';
-        if (j >= 0)
-            d2 = bigNum.digits[j] - '0';
+        int d1 = 0, d2 = 0;
+        if (i >= 0) d1 = digits[i] - '0'; // Performing artihmetic by converting char to int, logic will be used throughout the code :3
+        if (j >= 0) d2 = bigNum.digits[j] - '0';
 
         int sum = d1 + d2 + carry;
         result.digits.insert(result.digits.begin(), (sum % 10) + '0');
@@ -301,7 +370,7 @@ BigNum BigNum::add(const BigNum& bigNum) {
     while (result.digits.size() > 1 && result.digits[0] == '0')
         result.digits.erase(result.digits.begin());
 
-    // Zero should never be negative
+    // Handle sign of result (zero cannot be negative)
     if (result.digits.size() == 1 && result.digits[0] == '0')
         result.isNegative = false;
     else
@@ -310,33 +379,29 @@ BigNum BigNum::add(const BigNum& bigNum) {
     return result;
 }
 
+// Overload for integer addition
 BigNum BigNum::add(const int num) {
     BigNum temp(num);
     return add(temp);
 }
 
-void BigNum::compoundAdd(const BigNum& bigNum) {
-    *this = add(bigNum);
-}
+// Compound additions
+void BigNum::compoundAdd(const BigNum& bigNum) { *this = add(bigNum); }
+void BigNum::compoundAdd(const int num) { *this = add(num); }
 
-void BigNum::compoundAdd(const int num) {
-    *this = add(num);
-}
 
-// ===== Subtraction =====
 
 BigNum BigNum::subtract(const BigNum& bigNum) {
-    // Case 1: (-A) - (-B)  →  B - A
+    // Case 1: (-A) - (-B) → B - A
     if (isNegative && bigNum.isNegative) {
-        BigNum a = *this;
-        BigNum b = bigNum;
+        BigNum a = *this, b = bigNum;
         a.isNegative = false;
         b.isNegative = false;
         BigNum res = b.subtract(a);
         return res;
     }
 
-    // Case 2: (-A) - B  →  -(A + B)
+    // Case 2: (-A) - B → -(A + B)
     if (isNegative && !bigNum.isNegative) {
         BigNum temp = *this;
         temp.isNegative = false;
@@ -345,7 +410,7 @@ BigNum BigNum::subtract(const BigNum& bigNum) {
         return res;
     }
 
-    // Case 3: A - (-B)  →  A + B
+    // Case 3: A - (-B) → A + B
     if (!isNegative && bigNum.isNegative) {
         BigNum temp = bigNum;
         temp.isNegative = false;
@@ -354,10 +419,9 @@ BigNum BigNum::subtract(const BigNum& bigNum) {
 
     // Case 4: A - B (both positive)
     bool negativeResult = false;
-    BigNum a = *this;
-    BigNum b = bigNum;
+    BigNum a = *this, b = bigNum;
 
-    if (a.lessThan(b)) {
+    if (a.lessThan(b)) {                    // Ensure a >= b
         swap(a, b);
         negativeResult = true;
     }
@@ -369,13 +433,14 @@ BigNum BigNum::subtract(const BigNum& bigNum) {
     int i = a.digits.size() - 1;
     int j = b.digits.size() - 1;
 
+    // Digit-wise subtraction with borrowing
     while (i >= 0) {
         int d1 = a.digits[i] - '0' - borrow;
         int d2 = 0;
         if (j >= 0)
             d2 = b.digits[j] - '0';
 
-        if (d1 < d2) {
+        if (d1 < d2) {                      // Need to borrow
             d1 += 10;
             borrow = 1;
         } else {
@@ -384,16 +449,15 @@ BigNum BigNum::subtract(const BigNum& bigNum) {
 
         int diff = d1 - d2;
         result.digits.insert(result.digits.begin(), diff + '0');
-
         i--;
         j--;
     }
 
-    // Remove leading zeros
+    // Remove any leading zeros
     while (result.digits.size() > 1 && result.digits[0] == '0')
         result.digits.erase(result.digits.begin());
 
-    // Handle sign
+    // Assign correct sign
     if (result.digits.size() == 1 && result.digits[0] == '0')
         result.isNegative = false;
     else
@@ -402,36 +466,29 @@ BigNum BigNum::subtract(const BigNum& bigNum) {
     return result;
 }
 
+// Integer overload for subtraction
 BigNum BigNum::subtract(const int num) {
     BigNum temp(num);
     return subtract(temp);
 }
 
-void BigNum::compoundSubtract(const BigNum& bigNum) {
-    *this = subtract(bigNum);
-}
+// Compound subtraction
+void BigNum::compoundSubtract(const BigNum& bigNum) { *this = subtract(bigNum); }
+void BigNum::compoundSubtract(const int num) { *this = subtract(num); }
 
-void BigNum::compoundSubtract(const int num) {
-    *this = subtract(num);
-}
 
-// ===== Increment / Decrement =====
 
-void BigNum::increment() {
-    *this = add(1);
-}
+void BigNum::increment() { *this = add(1); }
+void BigNum::decrement() { *this = subtract(1); }
 
-void BigNum::decrement() {
-    *this = subtract(1);
-}
 
-// ===== Multiplication =====
 
 BigNum BigNum::multiply(const BigNum& bigNum) {
-    BigNum result("0");
+    BigNum result("0");                     // Start from zero
     int n = digits.size();
     int m = bigNum.digits.size();
 
+    // Manual multiplication (I'm can't do this anymore)
     for (int i = m - 1, pos = 0; i >= 0; i--, pos++) {
         int carry = 0;
         string temp;
@@ -445,6 +502,7 @@ BigNum BigNum::multiply(const BigNum& bigNum) {
         result = result.add(BigNum(temp));
     }
 
+    // Clean up leading zeros
     while (result.digits.size() > 1 && result.digits[0] == '0')
         result.digits.erase(result.digits.begin());
     if (result.digits.size() == 1 && result.digits[0] == '0')
@@ -455,11 +513,10 @@ BigNum BigNum::multiply(const BigNum& bigNum) {
     return result;
 }
 
-// ===== Division =====
-
 BigNum BigNum::div(const BigNum& divisor) {
     BigNum copyDivisor = divisor;
 
+    // Division by zero check
     if (copyDivisor.equals(BigNum("0"))) {
         cout << "Error: Division by zero!" << endl;
         BigNum zero("0");
@@ -474,8 +531,11 @@ BigNum BigNum::div(const BigNum& divisor) {
     BigNum quotient("0");
     BigNum current("0");
 
+    // Long division logic
     for (char d : dividend.digits) {
         current.digits.push_back(d);
+
+        // Remove any unnecessary zeros
         while (current.digits.size() > 1 && current.digits[0] == '0')
             current.digits.erase(current.digits.begin());
 
@@ -488,9 +548,11 @@ BigNum BigNum::div(const BigNum& divisor) {
         quotient.digits.push_back(count + '0');
     }
 
+    // Clean up quotient
     while (quotient.digits.size() > 1 && quotient.digits[0] == '0')
         quotient.digits.erase(quotient.digits.begin());
 
+    // Determine result sign
     if (quotient.digits.size() == 1 && quotient.digits[0] == '0')
         quotient.isNegative = false;
     else
@@ -499,16 +561,64 @@ BigNum BigNum::div(const BigNum& divisor) {
     return quotient;
 }
 
+// ====================== Jujutsu Kaisen: Modulo 3 ======================
+
 BigNum BigNum::mod(const BigNum& bigNum) {
     BigNum zero("0");
     BigNum temp;
     temp.copy(bigNum);
+
+    // Prevent modulo by zero
     if (temp.equals(zero)) {
         cout << "Error: Modulo by zero!" << endl;
         return zero;
     }
+
+    // Remainder = this - (quotient * divisor)
     BigNum quotient = this->div(bigNum);
     BigNum product = quotient.multiply(bigNum);
     BigNum remainder = this->subtract(product);
     return remainder;
 }
+
+// ⣿⣿⣿⣿⣿⣿⣿⣿⡿⡫⣁⡴⣈⡼⣟⣭⣷⣿⡿⠿⡽⡟⠍⡙⢕⣢⣿⡟⣱⣿⣿⣿⣿⣿⠟⠋⡕⢼⣣⣴⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⢿⣩⣾⣿⡿⣿⣿⢿⣿⣿⣿⣿⡿⠛⣙⢄⣽⣿⣿⣿⡃⢹⣿⣿⣾⢫⢿⢇⣿⡟⣼⣿⡇⠯⠈⠰⣶⣾⣶⡄⢻⣿⣿⢎⣮⡹⠗⣠⣵⣶⣿⣿⣷⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣿⣿⡿⡫⣪⡾⣫⣾⣯⠾⠛⣋⣥⣶⡿⠟⣩⢔⣼⣾⣿⣿⠏⣼⣿⣿⢟⣿⡟⣡⢊⣼⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⣿⡿⣫⣷⣿⣿⣿⣫⢏⡼⣫⣾⣿⣿⣿⣃⢔⠟⣱⣿⣿⡿⣛⣿⣿⣿⣿⣿⣿⣏⡾⣼⡿⣸⣿⣿⠃⣴⠠⢹⣸⡿⣿⣇⡱⡊⣿⣎⣎⢷⡘⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣿⠟⢞⣾⡟⠾⠿⢋⢥⣺⣯⣷⡿⢋⣴⣯⣾⡿⢟⢛⣻⠏⣼⣿⣿⠏⣾⣿⠟⣵⣿⣿⣿⣿⡿⠿⠟⠛⣛⣉⣥⣴⣶⡿⢟⣿⣿⣿⣿⡟⠑⣡⠯⣺⣿⣿⣿⣿⡿⢋⣴⣾⠿⠟⣫⣾⣿⣿⡟⣼⣿⣿⣿⡙⣽⡟⣵⣿⣿⣥⣦⡏⡇⠈⡏⣷⡹⣿⣦⠑⡜⣿⣯⢫⢭⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⡟⣠⠟⣩⣴⡾⣥⣼⠿⣫⣥⢈⣶⠶⢛⢍⡒⣡⡶⣼⠏⣰⣿⣿⢋⠶⢿⢥⣾⣮⣭⣿⢤⣤⡶⡾⣻⣿⠟⣨⣿⡿⢋⣴⣿⡿⣛⡟⡁⣴⡞⣡⣾⣿⢟⣭⣿⡿⠱⠟⡡⡊⣠⣾⣿⡿⣫⣟⣼⣿⢫⢯⣿⢸⣿⣾⣿⣿⣿⣿⢼⣷⣿⠀⣷⢿⢸⣜⢿⣷⡘⣞⢿⣷⡵⡣⠘⢿⣿⣿⣿⣿⣿⣿⣿⠿⢟⡛⠛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⡇⡉⣼⣿⡿⣼⡟⢡⣾⡿⢃⢈⡴⠚⠑⣋⣾⢟⠊⡄⢠⣿⡿⢃⡴⡵⣳⣿⢟⣵⡿⣵⡿⠿⠹⣼⣿⠏⣼⡿⢋⣴⣿⡿⣫⣪⢞⣡⠟⣢⣾⣿⠟⣵⡿⠛⣩⠞⣡⠪⢞⣾⣿⠟⢡⢞⠉⢊⣿⠇⡜⣸⡇⢠⣿⣿⣿⢿⣿⡟⣾⢹⣿⢈⣿⢸⠰⢻⡄⣻⣿⣎⢈⠻⣿⣞⢆⢸⣿⡿⢿⣻⣭⣷⣾⣿⣿⣿⣿⣶⣬⡛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣷⣦⣿⣿⢱⡟⣴⣿⠟⢑⣫⣷⠖⣡⣾⡿⡵⢁⡞⢻⣾⡟⢁⣞⣞⡽⣟⣵⡿⣫⠿⢋⡴⢰⣱⣿⠇⣼⠏⣠⣾⣿⢯⣾⢞⢵⣫⣷⢾⡯⠫⢠⡞⣡⢮⠞⣱⠞⣡⣢⣿⡿⠑⡠⣵⢇⣆⣾⡏⣼⠃⣿⠀⣽⡏⣿⡏⣼⣿⢳⡏⢨⡏⢘⣿⡔⢈⣸⣿⠱⡹⣿⢸⣰⡌⢛⣣⣬⣷⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣬⡻⢿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣮⠀⠩⢁⣴⣿⢟⣵⣾⡟⠩⠊⢒⢽⣾⣧⣻⡌⣾⢉⣬⠞⠏⠩⢚⣡⣾⠿⡃⡎⣿⠏⡼⢃⣼⣿⡟⢕⠕⣡⣴⢿⡫⠟⣙⣤⣶⠟⢌⡵⢋⡜⣡⡾⣵⣿⠟⢀⣤⡾⣱⡟⢌⡞⣰⡇⣠⡟⡠⣿⡇⣿⡇⣾⣿⡾⢀⣾⡟⣸⣿⣧⢸⣧⣿⢹⠁⣟⣬⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣙⢿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⢿⣢⣤⣿⢟⡵⠟⣁⣨⢁⣾⡌⣿⠂⢻⣿⡧⣁⠵⣋⡴⢊⡔⠈⠼⡿⣫⣾⠀⣹⣿⣿⢡⡾⣿⣋⣤⣧⠿⠫⢓⡩⣴⣾⡿⣫⠉⢠⣞⡷⢪⣤⣟⣽⣿⠏⣴⣿⢏⣾⡿⠘⡞⢱⡿⣠⣿⠇⡆⣿⡇⣿⢇⣿⣿⠁⣾⣿⢳⣿⠿⢇⣦⠻⣉⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣙⢿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣶⣿⣿⠏⠕⣩⣴⣿⡿⣣⡿⡳⣣⢹⠀⣃⠅⡨⠠⠞⢱⡞⣼⠛⣆⣧⣝⢛⡻⠤⢯⣟⣃⣲⣯⣿⠿⢛⢡⣶⣾⠛⣴⡿⣫⣾⠃⣰⣯⡟⣱⣯⣏⣼⣿⢃⣾⣿⢣⣿⢏⠄⡼⢡⣿⠇⣼⡿⢠⡏⣿⡇⣿⠈⣿⠇⣾⣿⢧⣿⠃⢀⣾⡟⡰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡙⣿⣿⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⡱⠇⣼⣿⣿⢟⡼⠋⣠⠞⠋⠀⠈⣤⣤⢷⢸⡟⣨⡇⠁⣇⢸⣿⣿⣷⣮⢁⠔⡭⠋⠉⡠⣊⡞⣳⣿⣿⣫⣼⢟⣾⣿⠁⡴⣳⢏⣾⣿⣟⡾⢻⣯⣿⣿⡡⢭⢏⡟⢰⢁⡟⡘⢰⣿⡅⣐⡚⣿⡇⣿⢂⡟⣼⣿⢏⣸⠇⣨⣼⡟⡌⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣈⢻⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠗⠝⡫⠞⣩⡔⣂⣮⢠⣶⡇⡐⡰⣶⠊⢸⠇⣿⡧⡗⣼⢾⣬⣭⡝⡡⡣⠚⠔⠀⢘⣼⣿⢳⣿⣿⣷⣿⣵⣿⣿⠃⣼⣵⢯⣿⣿⡟⣜⢡⡟⢹⣿⢱⣿⣿⣾⠃⢢⡟⣠⢇⣿⣿⡇⡯⠇⣽⡇⣿⢸⡽⣻⢟⠘⠈⣰⣿⡟⢸⢷⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⠋⢹⣿⡏⢹⣿⡟⠁⠈⣿⡿⠁⣿⣿⠁⣹⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⢹
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣥⣀⣥⣴⣾⣳⣾⢟⣵⢯⠞⡠⢳⢷⡭⢰⡏⡇⡏⡇⡅⢻⣿⡿⢋⠈⡀⣰⡷⠀⣠⣈⡹⢛⡿⠿⣿⣿⣿⣿⣿⡿⠰⣳⢫⣿⣿⣿⠹⣁⡾⢡⢸⢣⣿⣿⣿⠿⠐⢋⠚⡈⣬⣭⣴⣶⣞⡇⣿⡇⣿⣸⣱⠟⣎⡇⣸⣿⡟⣼⡟⡾⢸⣿⣿⣿⣿⣿⣿⣿⣿⡏⠀⠈⡿⢀⡾⠋⣠⠆⠀⣿⠁⠈⠉⠁⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⢸
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⣫⣴⠿⠕⣡⢮⡾⡘⣦⣿⡸⡇⠀⡅⢡⢥⢐⡋⢦⣶⡿⢯⣽⢧⢡⣿⣺⣟⣶⣾⣥⣜⣢⠫⣉⠿⣿⣾⢏⣿⣿⣿⣿⢰⠻⢣⣿⢈⡬⠝⣀⣲⣤⣴⣟⢞⣽⣿⣿⣿⡿⣿⡿⢸⡗⣿⠉⢣⡇⣿⢠⣿⣿⡹⠟⣼⢷⢸⣿⣿⣿⣿⣿⣿⣿⡿⠀⣶⠀⠀⡼⠁⣀⣠⡄⠠⠇⢠⣾⡟⢀⣾⡿⠋⣹⣿⣿⣿⣿⣿⣿⣿⡟⢸
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⣋⣡⣘⣣⣴⡾⣽⣳⢏⡼⠁⠙⣿⡇⢿⠀⠻⡾⣸⣿⣿⡐⠢⠩⠀⠐⠀⠭⢒⣚⠯⢭⣛⡿⣿⣿⣷⣶⢤⡹⡟⣼⣿⣿⣿⣿⣮⣴⡿⠿⣄⣶⣾⣿⣿⡿⢟⣫⠭⠿⠒⠢⠤⠔⠀⠀⠘⣧⣿⠌⣿⠃⡟⣼⣿⣿⣇⠆⡿⣼⢸⣿⣿⣿⣿⣿⣿⣿⣧⣼⣿⣧⣼⣧⣼⣿⣿⣦⣴⣤⣿⣿⣦⣼⡟⣡⣾⣿⣿⣿⣿⣿⣿⣿⣿⡇⣼
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣾⣿⣿⣿⣿⡿⣽⠃⢡⣾⠁⢞⣧⢹⡇⢸⡇⢧⢷⡉⣿⣿⣿⡃⠜⣿⣿⡇⢻⣷⡂⢸⣤⣈⠙⠂⣿⣿⣿⣧⢠⢸⣿⣿⣿⣿⣿⣿⡟⠁⣹⣿⣿⣿⣿⡿⠐⢋⠁⣤⣖⣘⣻⠇⣼⣿⣿⠃⣹⡏⠸⢃⡏⠀⣻⣿⣿⣟⡀⣇⡏⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠿⠛⢿⠛⢻⡿⠟⠛⠛⠛⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠗⢋⣴⣿⡏⠀⣾⡿⠀⠇⣾⡉⣘⣿⣧⡸⣿⣿⣧⡡⢻⣿⣿⣦⣘⠿⢽⣛⣽⣷⡀⠸⣿⣿⣿⣃⡀⣿⣿⣿⣿⣿⣿⡟⣧⣹⣿⣿⣿⣿⠃⢰⣿⣷⣝⡻⢛⣋⣴⣿⣿⢏⣇⢻⡌⠈⡸⢽⠐⣿⣿⡟⣼⣱⡿⣠⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡄⢠⣶⠀⣴⣿⠀⣠⣶⣶⠂⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣿⣿⣿⠀⢰⣿⠃⡜⠀⢻⡇⢸⣿⣿⣷⣽⣿⣿⣿⣣⡻⢿⣿⣿⣿⣿⣿⣿⡿⢠⣐⢉⢉⡿⢉⣴⣿⣿⣿⣿⣿⣿⣿⣾⣿⡿⠻⢿⡏⢠⣌⢿⣿⣿⣿⣿⣿⣿⡿⣫⣜⣿⢳⢠⢹⡇⣸⣷⣾⢛⡇⢿⡟⣱⣿⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⢀⣾⣿⣿⣿⡏⢠⠿⠛⢁⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢠⡜⣣⣾⢁⣃⢹⣿⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣶⣶⣾⣿⣥⣴⣿⣳⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣬⠡⠛⢿⣾⣶⣶⣶⣶⣿⣿⣿⣿⣿⣿⣿⠈⡇⢾⣷⣿⣿⡿⢸⣿⡞⡀⣾⣿⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⠉⢁⣀⣠⣽⣿⣿⣀⣀⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣻⣵⣾⣿⢇⢈⡜⣅⠹⡇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢏⣸⣧⢻⣿⣿⣿⡇⣿⡟⡀⡆⣿⣿⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⢊⣬⣾⣿⣷⣤⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣯⣾⣿⣿⣾⣿⣿⡿⠸⠟⠠⢠⢣⢿⣿⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⢹⡟⠈⢹⣿⠃⣸⠏⢸⡏⠈⣿⡿⠁⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣿⣿⣿⣿⣿⣿⡆⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⣴⠀⡏⣸⡇⠎⢿⡛⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⡟⢁⠀⠸⠃⣰⡟⢀⡿⠀⡀⠘⠃⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⣽
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⣸⣿⠀⠀⣿⣿⢰⣾⡇⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⢠⣾⡀⠀⣴⡿⠁⣾⠁⣼⣷⠀⢠⣿⠛⢙⣿⣿⣿⣿⣿⣿⣿⣿⡇⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⢠⣿⡏⠠⣸⣿⣷⣿⣿⢃⣨⣿⣿⣿⣿⣿⣿⣿⣷⣶⣿⣿⣷⣾⣿⣷⣼⣿⣶⣿⣿⣷⣾⣿⣶⣿⣿⣿⣿⣿⣿⣿⣿⡿⣡⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠀⣾⣿⢁⣵⣿⣿⣿⣿⣿⣆⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣱⣿⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣬⡻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⣴⣿⣿⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⠈⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣴⡙⢿⣿⡿⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠋⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣽⡻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⣼⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⢂⡹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣾⣿⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⣡⠀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣯⣝⡻⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠟⠋⢁⣾⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⢱⡌⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⣡⣾⠃⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢿⣛⣿⣿⣿⣿⣿⣷⣶⣬⡁⣨⠿⣛⣛⣛⣻⣿⣿⣿⣿⣷⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠐⠌⣿⣆⠹⣿⣿⣿⣿⣿⣏⣙⣻⠿⠿⢿⣿⣿⣿⣿⣿⡿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⢿⣟⣋⣤⣾⣿⣿⣿⡿⢣⣾⣿⢏⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⡴⣩⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⡳⢹⣿⣷⡈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣗⢦⡀⠀⠤⣤⣤⣤⣤⣤⣤⣄⠤⠖⡀⢴⣶⣿⣿⣿⣿⣿⣿⣿⡿⢋⣴⣿⡿⠋⣀⠀⣺⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⣨⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢰⣌⠊⣿⣿⣿⣆⠙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣮⣙⠛⠛⠒⠒⠒⠒⠒⡖⢒⣩⣼⣿⣿⣿⣿⣿⣿⣿⡿⢋⣴⣿⣿⣿⠍⣐⡇⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢸⣿⣷⣿⣿⣿⣿⣷⡌⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢋⣴⣿⣿⣿⣿⡏⢀⡳⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢸⣿⣿⣿⣿⣿⣿⣿⣖⢀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⣱⣿⣿⣿⣿⣿⣿⡯⢅⡾⠀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠃⠘⣿⡷⣝⢿⣿⣿⣿⣿⡧⠢⡀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠁⣰⣿⣿⣿⣿⣿⣿⣭⣾⣿⡇⡆⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠉⠀⠀⠀⠀⣿⣿⣮⡳⡍⠿⣿⣿⣿⣌⠺⢔⣌⠛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠁⢂⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠋⠁⠀⠀⠀⠀⠀⠀⠈⣿⣿⣿⡌⠲⣜⢿⣿⣿⣿⡄⢠⣹⣷⣆⣉⠛⠿⠿⠿⠿⢿⠿⡿⠿⠿⠟⠋⣀⠤⡢⢼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠉⠛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣿⣿⣷⡐⢔⢌⢿⣿⣿⣿⣄⠐⢿⣿⣿⣿⣿⣷⣶⣶⣦⣦⣴⣤⣦⡔⠲⢌⡱⣴⣿⣿⣿⠟⢋⣩⣿⣿⣿⣿⣿⡿⠀⠀⠀⠀⠀⠈⠛⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣷⢠⠓⢮⣻⣿⣿⣿⣎⢈⠽⣛⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠣⠕⢲⣿⣿⣿⣿⢏⣰⣾⠿⣿⣿⣿⣿⣿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠻⣇⢙⢴⢙⣿⣿⣿⣿⣷⡱⣦⣪⠬⣽⣛⡿⡟⣻⣿⣿⣣⣌⣴⣿⣿⣿⡿⢁⡴⢚⣋⠸⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⣿⣿⣿⣿⣿⡿⠿⠛⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠳⢝⢆⢻⣿⣿⣿⣿⣧⢩⣫⠭⢟⣻⢒⣼⣿⣿⣯⢅⣾⣿⣿⡿⢋⡀⢦⣼⠯⣭⣶⣾⡿⠟⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+// ⠿⠟⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠘⠿⢿⣿⣿⣿⣄⣺⢭⣻⡆⢾⣿⣿⣿⡄⣿⣿⣿⡟⠁⠀⢴⡟⣮⡿⠼⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠻⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
